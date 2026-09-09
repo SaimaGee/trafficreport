@@ -104,7 +104,7 @@ Coverage includes malformed input handling (bad JSON, missing fields, invalid st
 
 Sliding window log, per client_id, with a configurable window duration and request ceiling (default: 100 requests per 60-second window).
 This was chosen over the alternatives for the following reasons:
-- Fixed window was ruled out because it undercounts abuse at window boundaries — a client can send the full limit at 0:59 and again at 1:01 and never trip a fixed-window check, despite sending double the allowed rate in two seconds.
+- Fixed window was ruled out because it undercounts abuse at window boundaries, a client can send the full limit at 0:59 and again at 1:01 and never trip a fixed-window check, despite sending double the allowed rate in two seconds.
 - Token bucket and leaky bucket are well suited to live traffic shaping at request time, but this program evaluates a completed log after the fact, so there's no need for the smoothing behavior they provide.
 - Sliding window counter (the approximated, memory-cheaper cousin of sliding window log) was considered, but with request volumes at the scale of a single log file, exact per-timestamp tracking is affordable and gives an exact violation count rather than an estimate.
 
