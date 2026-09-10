@@ -126,3 +126,6 @@ The report includes:
 - Split rate-limit evaluation by endpoint as well as by client, since a single expensive endpoint can make a normal client look like a rate-limit violator under a client-only rule.
 - Add a streaming/live mode in addition to the current batch-over-a-file mode, so the same evaluator could sit behind a real-time ingestion pipeline.
 - Expand the test suite to cover boundary conditions more thoroughly: a request landing exactly at the window edge, out-of-order timestamps in the input, and very large files to confirm memory stays bounded.
+
+## AI tool usage
+I used Claude throughout this project for design discussion, initial code drafting, and debugging. Design decisions, the sliding-window rate-limit approach, keying by client_id, separating duplicates from malformed input, were worked through with Claude before implementation. The parser, aggregator, rate limiter, and renderer were initially drafted with AI assistance, then compiled, run against test input, and fixed by hand where bugs surfaced (a null Duration field, an unrecorded discard count, a type mismatch between two classes, and a dead code branch in the output format switch). The regex-based JSON parsing is a known trade-off, chosen to avoid a dependency issue rather than as a general-purpose solution, and won't handle inputs beyond the flat schema this project targets.
